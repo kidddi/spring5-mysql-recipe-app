@@ -102,9 +102,16 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         if(!mexicanCategoryOptional.isPresent()){
             throw new RuntimeException("Expected Category Not Found");
         }
+        
+        Optional<Category> fastFoodCategoryOptional = categoryRepository.findByDescription("Fast Food");
+
+        if(!fastFoodCategoryOptional.isPresent()){
+            throw new RuntimeException("Expected Category Not Found");
+        }
 
         Category americanCategory = americanCategoryOptional.get();
         Category mexicanCategory = mexicanCategoryOptional.get();
+        Category fastFoodCategory = fastFoodCategoryOptional.get();
 
         //Yummy Guac
         Recipe guacRecipe = new Recipe();
@@ -147,7 +154,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacRecipe.addIngredient(new Ingredient("ripe tomato, seeds and pulp removed, chopped", new BigDecimal(".5"), eachUom));
 
         guacRecipe.getCategories().add(americanCategory);
-        guacRecipe.getCategories().add(mexicanCategory);
+        guacRecipe.getCategories().add(fastFoodCategory);
 
         guacRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/");
         guacRecipe.setServings(4);

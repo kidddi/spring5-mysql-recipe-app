@@ -2,6 +2,7 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.exceptions.NotFoundException;
+import guru.springframework.services.CategoryService;
 import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,15 +23,17 @@ public class RecipeController {
 
     private static final String RECIPE_RECIPEFORM_URL = "recipe/recipeform";
     private final RecipeService recipeService;
+    private final CategoryService categoryService;
 
-    public RecipeController(RecipeService recipeService) {
-        this.recipeService = recipeService;
-    }
+    public RecipeController(RecipeService recipeService, CategoryService categoryService) {
+		this.recipeService = recipeService;
+		this.categoryService = categoryService;
+	}
 
-    @GetMapping("/recipe/{id}/show")
+	@GetMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model){
 
-        model.addAttribute("recipe", recipeService.findById(new Long(id)));
+        model.addAttribute("recipe", recipeService.findCommandById(new Long(id)));
 
         return "recipe/show";
     }
@@ -39,12 +42,13 @@ public class RecipeController {
     public String newRecipe(Model model){
         model.addAttribute("recipe", new RecipeCommand());
 
-        return "recipe/recipeform";
+        return RECIPE_RECIPEFORM_URL;
     }
 
     @GetMapping("recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model){
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
+        model.addAttribute("categories", categoryService.listAllCategoryes());
         return RECIPE_RECIPEFORM_URL;
     }
 

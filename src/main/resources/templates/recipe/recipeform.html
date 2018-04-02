@@ -50,13 +50,16 @@
                                 <div class="col-md-3 form-group">
                                     <label>Categories:</label>
                                 </div>
-                                <div class="col-md-9 form-group">
-                                    <div class="radio">
-                                        <label>
-                                            <input type="checkbox" value=""/>
-                                            Cat 1
-                                        </label>
-                                    </div>
+                                <div class="col-md-9 form-group" >
+                                    <ul>
+                                        <li th:each="category : ${categories}" >
+                                            <input type="checkbox" 
+                                            th:value="${category.id}"
+                                            th:field="${recipe.categories}"
+                                            th:checked="${recipe.categories.contains(category)}"/>
+                                            <label th:text="${category.description}"></label>                                          
+                                        </li>
+                                    </ul>
                                     <div class="radio" th:remove="all">
                                         <label>
                                             <input type="checkbox" value=""/>
@@ -133,10 +136,10 @@
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <div class="row">
-                                <div class="col-md-11 ">
+                                <div class="col-md-10 ">
                                     <h1 class="panel-title">Ingredients</h1>
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <a class="btn btn-default" href="#"
                                        th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">View</a>
                                 </div>
